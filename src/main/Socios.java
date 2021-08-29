@@ -6,11 +6,42 @@ import java.util.ArrayList;
 
 public class Socios {
 
+    private Consumo consumos[] = new Consumo[20];
+    private Persona personas[] = new Persona[10];
+
     private String cedula;
-    private float fondos;
-    private String suscripcion;
-    private String facturas;
-    private ArrayList<String> listaPersonasAutorizadas;
+    private String tipoDeSuscripcion;
+    private String nombre;
+    private double fondos;
+
+    public Socios(String cedula) {
+        this.cedula = cedula;
+        this.nombre = JOptionPane.showInputDialog("Ingrese el nombre del nuevo socio.");
+    }
+
+    public String getTipoDeSuscripcion() {
+        return tipoDeSuscripcion;
+    }
+
+    public void setTipoDeSuscripcion(String tipoDeSuscripcion) {
+        this.tipoDeSuscripcion = tipoDeSuscripcion;
+    }
+
+    public Consumo[] getConsumos() {
+        return consumos;
+    }
+
+    public void setConsumos(Consumo[] consumos) {
+        this.consumos = consumos;
+    }
+
+    public Persona[] getPersonas() {
+        return personas;
+    }
+
+    public void setPersonas(Persona[] personas) {
+        this.personas = personas;
+    }
 
     public String getCedula() {
         return cedula;
@@ -20,92 +51,59 @@ public class Socios {
         this.cedula = cedula;
     }
 
-    public float getFondos() {
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public double getFondos() {
         return fondos;
     }
 
-    public void setFondos(float fondos) {
+    public void setFondos(double fondos) {
         this.fondos = fondos;
     }
 
-    public String getSuscripcion() {
-        return suscripcion;
-    }
-
-    public void setSuscripcion(String suscripcion) {
-        this.suscripcion = suscripcion;
-    }
-
-    public String getFacturas() {
-        return facturas;
-    }
-
-    public void setFacturas(String facturas) {
-        this.facturas = facturas;
-    }
-
-    public ArrayList<String> getListaPersonasAutorizadas() {
-        return listaPersonasAutorizadas;
-    }
-
-    public void setListaPersonasAutorizadas(ArrayList<String> listaPersonasAutorizadas) {
-        this.listaPersonasAutorizadas = listaPersonasAutorizadas;
-    }
-
-    public Socios(String cedula) {
-
-        String opcion = null;
-        this.cedula = cedula;
-        System.out.println(this.cedula);
+    public double ingresarFondos(String tipoDeSuscripcion) {
+        double nuevoIngreso;
 
         do {
-            opcion = JOptionPane.showInputDialog(null, "Ingrese '1' sí el usuario es VIP. \n " +
-                    "Ingrese '2' sí el usuario es REGULAR.");
-
-            switch (opcion) {
-            case "1": {
-                opcion = "VIP";
-                System.out.println("Suscripcion agregada con exito");
-
-                break;
+            nuevoIngreso = Double.parseDouble(JOptionPane.showInputDialog(null, "¿Cuanto dinero desea ingresar?"));
+            nuevoIngreso = nuevoIngreso + this.fondos;
+            if (tipoDeSuscripcion == "REGULAR" && (nuevoIngreso < 50000 || nuevoIngreso > 1000000)) {
+                JOptionPane.showMessageDialog(null, "Error, restriccion generada: \n" +
+                        "Minimo 50.000 y el maximo 1.000.000 --> REGULAR"+
+                        "\n No se ha podido realizar el ingreso. Por favor Intentalo nuevamente");
+                nuevoIngreso = 0;
+            } else if(tipoDeSuscripcion == "VIP" && (nuevoIngreso < 100000 || nuevoIngreso > 5000000)) {
+                JOptionPane.showMessageDialog(null, "Error, restriccion generada: \n" +
+                        "Minimo 100.000 y el maximo 5.000.000 --> VIP" +
+                        "\n No se ha podido realizar el ingreso. Por favor Intentalo nuevamente");
+                nuevoIngreso = 0;
             }
-            case "2": {
-                opcion = "REGULAR";
-                System.out.println("Suscripcion agregada con exito");
-                break;
-            } default:
-                opcion = null;
-                JOptionPane.showMessageDialog(null,"Opcion ingresada no valida, por favor intente nuevamente.");
-        }} while (opcion == null);
 
-        this.suscripcion = opcion;
+        } while(nuevoIngreso == 0);
 
-        this.fondos = Float.parseFloat(JOptionPane.showInputDialog(null, "¿Cuanto dinero desea ingresar?"));
+        this.fondos = nuevoIngreso;
+        return this.fondos;
 
-        //Validar los fondos minimos.
-        if (opcion == "REGULAR") {
-            if (this.fondos <= 50000 || this.fondos > 1000000) {
-                JOptionPane.showMessageDialog(null,"Error, restriccion generada: Minimo 50.000. Maximo 1.000.000");
+    }
 
-            }
-        } else if(opcion == "VIP") {
-            if(this.fondos <= 100000 || this.fondos > 5000000) {
-                JOptionPane.showMessageDialog(null,"Error, restriccion generada: Minimo 100.000. Maximo 5.000.000");
+    public void crearConsumo(double consumoValor) {
 
+        for (int i = 0; i < consumos.length; i++) {
+            if (consumos[i] == null) {
+                if (this.fondos >= consumoValor) {
+                    consumos[i] = new Consumo(consumoValor);
+                }
             }
         }
-
-
-        this.facturas = null;
-        this.listaPersonasAutorizadas = listaPersonasAutorizadas;
     }
 
-    public void agregarPersonasAutorizadas() {
+    public void pagarConsumo() {
 
     }
-
-    public void noRepetirCedula(String cedula, Socios[] socios) throws NullPointerException {
-
-    }
-
 }
