@@ -8,10 +8,10 @@ public class Consumo {
     private double valor;
     private String nombre;
 
-    public Consumo(double consumoValor) {
+    public Consumo(double consumoValor, String nombre) {
         this.concepto = JOptionPane.showInputDialog("Ingrese el concepto del consumo");
         this.valor = consumoValor;
-        this.nombre = JOptionPane.showInputDialog("Nombre de socio o persona autorizada que realiza el consumo.");
+        this.nombre = nombre;
     }
 
     public String getConcepto() {

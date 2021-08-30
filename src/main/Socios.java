@@ -8,7 +8,6 @@ public class Socios {
 
     private Consumo consumos[] = new Consumo[20];
     private Persona personas[] = new Persona[10];
-
     private String cedula;
     private String tipoDeSuscripcion;
     private String nombre;
@@ -33,14 +32,6 @@ public class Socios {
 
     public void setConsumos(Consumo[] consumos) {
         this.consumos = consumos;
-    }
-
-    public Persona[] getPersonas() {
-        return personas;
-    }
-
-    public void setPersonas(Persona[] personas) {
-        this.personas = personas;
     }
 
     public String getCedula() {
@@ -92,18 +83,49 @@ public class Socios {
 
     }
 
-    public void crearConsumo(double consumoValor) {
+    public boolean crearConsumo(double consumoValor, String nombreConsumidor) {
 
         for (int i = 0; i < consumos.length; i++) {
             if (consumos[i] == null) {
                 if (this.fondos >= consumoValor) {
-                    consumos[i] = new Consumo(consumoValor);
+                    consumos[i] = new Consumo(consumoValor, nombreConsumidor);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else if(i == consumos.length-1){
+                JOptionPane.showMessageDialog(null, "Limite de consumos excedidos, por favor pagar facturas para realizar un consumo.");
+            }
+        }
+        return false;
+    }
+
+    public Boolean consumoEliminado() {
+        String concepto = JOptionPane.showInputDialog("Ingrese el concepto de su consumo que quiere eliminar.");
+
+        for (int i = 0; i < consumos.length; i++) {
+            if (consumos[i] != null) {
+                System.out.println("concepto:" + consumos[i].getConcepto() + " {" + concepto + "} ");
+                if(consumos[i].getConcepto().equals(concepto)) {
+                    this.fondos = this.fondos - consumos[i].getValor();
+                    consumos[i] = null;
+                    return true;
                 }
             }
         }
+        return false;
     }
 
-    public void pagarConsumo() {
+    public void listarFacturas() {
+
+        for (int i = 0; i < consumos.length; i++) {
+            if(consumos[i] != null) {
+                JOptionPane.showMessageDialog(null,
+                        "Valor del consumo: " + consumos[i].getValor() + "\n" +
+                                "Concepto del consumo: " + consumos[i].getConcepto()
+                        );
+            }
+        }
 
     }
 }

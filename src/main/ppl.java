@@ -14,6 +14,7 @@ public class ppl {
                     + "2. para registrar un socio VIP\n"
                     + "3. para ingresar fondos\n"
                     + "4. para realizar un consumo\n"
+                    + "5. para pagar un consumo\n"
                     + "7. para eliminar un socio \n"
             ));
 
@@ -31,7 +32,11 @@ public class ppl {
                     break;
                 }
                 case 4: {
-                    double consumo = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el valor del consumo"));
+                        socios.ingresarConsumo(JOptionPane.showInputDialog("Por favor ingrese la cedula del socio o persona para realizar un consumo."));
+                    break;
+                }
+                case 5: {
+                    socios.pagarFacturas();
 
                     break;
                 }
