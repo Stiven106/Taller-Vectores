@@ -15,6 +15,7 @@ public class Consumo {
     }
 
     public String getConcepto() {
+
         return concepto;
     }
 
@@ -37,4 +38,14 @@ public class Consumo {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    public void listarConsumos() {
+
+        JOptionPane.showMessageDialog(null,
+                "valor del consumo : " + valor +
+                "\nconcepto del consumo : " + concepto
+        );
+    }
+
+
 }

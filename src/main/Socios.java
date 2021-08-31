@@ -87,7 +87,7 @@ public class Socios {
 
     }
 
-    public boolean crearConsumo(double consumoValor, String nombreConsumidor) {
+    public boolean crearConsumoSocio(double consumoValor, String nombreConsumidor) {
 
         for (int i = 0; i < consumos.length; i++) {
             if (consumos[i] == null) {
@@ -105,38 +105,86 @@ public class Socios {
         return false;
     }
 
-    public Boolean consumoEliminado() {
-        String concepto = JOptionPane.showInputDialog("Ingrese el concepto de su consumo que quiere eliminar.");
+    public Boolean crearConsumoPersona(double consumoValor, String cedula) {
+        String nombreConsumidor = retornarNombrePersona(cedula);
+        if (this.fondos >= consumoValor) {
+            for (int i = 0; i < personas.length; i++) {
+                if(personas[i] != null && personas[i].getCedula().equals(cedula)) {
+                   personas[i].ingresarConsumos(consumoValor, nombreConsumidor);
+                    return true;
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Fondos insuficientes.");
+            return false;
+        }
+        return false;
+
+    }
+
+    public Boolean eliminarConsumoByConcepto(String concepto) {
 
         for (int i = 0; i < consumos.length; i++) {
-            if (consumos[i] != null) {
-                if(consumos[i].getConcepto().equals(concepto)) {
+            if (consumos[i] != null && consumos[i].getConcepto().equals(concepto)) {
                     if ((this.fondos - consumos[i].getValor()) >= 0) {
                         this.fondos = this.fondos - consumos[i].getValor();
                         consumos[i] = null;
+                        JOptionPane.showMessageDialog(null,"Factura pagada con exito.");
                         return true;
                     } else {
+                        JOptionPane.showMessageDialog(null,"Fondos insuficientes para realizar la transaccion, pruebe ingresando fondos.");
                         return false;
                     }
+            }
+        }
+
+
+        return false;
+    }
+
+    public void listarFacturas() {
+        Boolean esExito = false;
+                esExito = true;
+        for (int i = 0; i < consumos.length; i++) {
+            if (consumos[i] != null ) {
+                consumos[i].listarConsumos();
+            }
+        }
+        if (esExito) {
+                return;
+        } else {
+            JOptionPane.showMessageDialog(null, "No existen facturas, por favor vuelva al menu..");
+
+        }
+    }
+
+    public Boolean eliminarFacturaPersona(String concepto) {
+        for (int i = 0; i < personas.length; i++) {
+            if(personas[i] != null) {
+                double valorConsumo = personas[i].eliminarConsumos(concepto);
+                if ((this.fondos - valorConsumo) >= 0) {
+                    this.fondos = this.fondos - valorConsumo;
+                    JOptionPane.showMessageDialog(null,"Factura pagada con exito.");
+                    return true;
+                } else {
+                    return false;
                 }
             }
         }
         return false;
     }
 
-    public void listarFacturas() {
+    public void listarFacturasPersonas(String cedula) {
         Boolean esExito = false;
-        for (int i = 0; i < consumos.length; i++) {
-            if(consumos[i] != null) {
-                esExito = true;
-                JOptionPane.showMessageDialog(null,
-                        "Valor del consumo: " + consumos[i].getValor() + "\n" +
-                                "Concepto del consumo: " + consumos[i].getConcepto()
-                        );
+        for (int i = 0; i < personas.length; i++) {
+            if(personas[i] != null && personas[i].getCedula().equals(cedula) ) {
+                esExito = personas[i].listarConsumos();
+                return;
             }
         }
         if (esExito) {
-                return;
+            JOptionPane.showMessageDialog(null, "Factura pagada con exito." + "\nSaldo actual: " + getFondos());
+            return;
         } else {
             JOptionPane.showMessageDialog(null, "No existen facturas, por favor vuelva al menu..");
 
@@ -164,28 +212,60 @@ public class Socios {
                 "autorizadas para ingresar una nueva.");
     }
 
-    public void eliminarPersonas(String cedula) {
+    public Boolean buscarPersonasByCedula(String cedula) {
         for (int i = 0; i < personas.length; i++) {
             if (personas[i] != null && personas[i].getCedula().equals(cedula)) {
-                personas[i] = null;
-                return;
+                return true;
             }
         }
+        return false;
     }
 
+    public String retornarNombrePersona(String cedula) {
+        for (int i = 0; i < personas.length; i++) {
+            if (personas[i] != null && personas[i].getCedula().equals(cedula)) {
+                return personas[i].getNombre();
+            }
+        }
+        return null;
+    }
+
+    public Boolean cedulaSeRepite(String cedula) {
+        Boolean seRepite = false;
+        for (int i = 0; i < personas.length; i++) {
+            if (personas[i] != null && personas[i].getCedula().equals(cedula)) {
+                seRepite = true;
+                break;
+            }
+        }
+
+        if (seRepite) {
+                JOptionPane.showMessageDialog(null, "Cedula ingresada ya existe dentro de la base de datos.");
+        }
+
+        return seRepite;
+    }
 
     public Boolean existenAutorizados() {
         for (int i = 0; i < personas.length; i++) {
             if (personas[i] != null) {
-                //existen retornar false
-                return false;
+                //si existen
+                return true;
             }
         }
         //no existen retornar true
-        return true;
+        return false;
+    }
+    public Boolean existenConsumos() {
+        for (int i = 0; i < consumos.length; i++) {
+            if (consumos[i] != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public int mostrarConsumos() {
+    public int mostrarCantidadConsumos() {
         int contador = 0;
 
         for (int i = 0; i < consumos.length; i++) {
@@ -195,4 +275,25 @@ public class Socios {
         }
         return contador;
     }
+
+    public int mostrarCantidadConsumosPersona(String cedula) {
+        for (int i = 0; i < personas.length; i++) {
+            if (personas[i] != null && personas[i].getCedula().equals(cedula)) {
+                return personas[i].mostrarCantidadConsumosPersona();
+            }
+        }
+        return 0;
+    }
+
+    public Boolean eliminarPersonaAutorizada(String cedula) {
+
+        for (int i = 0; i < personas.length; i++) {
+            if (personas[i] != null && personas[i].getCedula().equals(cedula)) {
+                personas[i] = null;
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

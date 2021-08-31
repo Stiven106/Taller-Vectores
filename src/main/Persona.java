@@ -19,6 +19,7 @@ public class Persona {
 
 
     public Consumo[] getConsumos() {
+
         return consumos;
     }
 
@@ -37,4 +38,58 @@ public class Persona {
     public void setCedula(String cedula) {
         this.cedula = cedula;
     }
+
+    public Boolean ingresarConsumos(double consumoValor, String nombreConsumidor) {
+        for (int i = 0; i < consumos.length; i++) {
+            if (consumos[i] == null) {
+                consumos[i] = new Consumo(consumoValor, nombreConsumidor);
+                return true;
+            } else if(i == consumos.length-1){
+                JOptionPane.showMessageDialog(null, "Limite de consumos excedidos, por favor pagar facturas para realizar un consumo.");
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public Boolean listarConsumos() {
+        Boolean esExito = false;
+
+        for (int i = 0; i < consumos.length; i++) {
+            if (consumos[i] != null ) {
+                esExito = true;
+                consumos[i].listarConsumos();
+            }
+        }
+
+        return esExito;
+    }
+
+    public Double eliminarConsumos(String concepto) {
+        for (int i = 0; i < consumos.length; i++) {
+            if (consumos[i] != null && consumos[i].getConcepto().equals(concepto) ) {
+                double descontar = consumos[i].getValor();
+                consumos[i] = null;
+                return descontar;
+            }
+        }
+
+        JOptionPane.showMessageDialog(null, "El concepto no coincide con ningun consumo.");
+        return null;
+
+    }
+
+    public int mostrarCantidadConsumosPersona() {
+        int contador = 0;
+
+        for (int i = 0; i < consumos.length; i++) {
+            if (consumos[i] != null) {
+                contador++;
+            }
+        }
+        return contador;
+    }
+
+
+
 }

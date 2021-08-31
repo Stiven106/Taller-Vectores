@@ -13,10 +13,15 @@ public class ppl {
                     + "1. para registrar un socio regular \n"
                     + "2. para registrar un socio VIP\n"
                     + "3. para registrar una persona autorizada\n"
-                    + "4. para eliminal una persona autorizada\n"
+                    + "4. para eliminar una persona autorizada\n"
                     + "5. para ingresar fondos\n"
                     + "6. para realizar un consumo\n"
                     + "7. para pagar o listar facturas\n"
+                    + "Aclaracion: si consulta por socio solo \n" +
+                    "le mostrara los consumos de socio\n"
+                    +"Si quiere consultar por los consumos \n" +
+                    "de personas autorizadas tiene que ingresar\n" +
+                    " la cedula de ellos. \n"
                     + "8. para eliminar un socio \n"
                     + "9. para ver cantidad de consumos por cedula \n"
             ));
@@ -34,8 +39,9 @@ public class ppl {
                     socios.InsertarPersonaAutorizada();
                     break;
                 }
+
                 case 4: {
-                    socios.eliminarPersonaAutorizada();
+                    socios.eliminarAutorizado();
                     break;
                 }
                 case 5: {
@@ -48,20 +54,18 @@ public class ppl {
                 }
                 case 7: {
                     Boolean pagar = false;
-                    Socios socioLocal = socios.listarFacturas(JOptionPane.showInputDialog("Ingrese la cedula del socio o persona para consultar facturas."));
-                    if (socioLocal != null) {
-                        pagar = Boolean.parseBoolean(JOptionPane.showInputDialog(
-                                "Ingrese 'true' para proceder a pagar una factura \n" +
-                                "Ingrese 'false' para volver al menu"));
-                        if (pagar) {
-                            socios.pagarFacturas(socioLocal);
-                        }
+                    socios.listarFacturas(JOptionPane.showInputDialog("Ingrese la cedula del socio o persona para consultar facturas."));
+                    pagar = Boolean.parseBoolean(JOptionPane.showInputDialog(
+                            "Ingrese 'true' para proceder a pagar una factura \n" +
+                                    "Ingrese 'false' para volver al menu"));
+                    if (pagar) {
+                        String concepto = JOptionPane.showInputDialog("Ingrese el concepto de la factura que quiere eliminar");
+                        socios.pagarFacturas(concepto);
+                        break;
                     } else {
-                        JOptionPane.showMessageDialog(null, "No existen facturas para este socio.");
+                        break;
                     }
 
-
-                    break;
                 }
                 case 8: {
                     socios.eliminarSocio(JOptionPane.showInputDialog("Ingrese cedula del socio a eliminar."));

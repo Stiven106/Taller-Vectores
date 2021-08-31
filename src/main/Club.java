@@ -26,8 +26,8 @@ public class Club<T> {
 
 
         //Para vips
-        for (int i = 0; i < sociosVip.length ; i++) {
-            if (sociosVip[i] == null ) {
+        for (int i = 0; i < sociosVip.length; i++) {
+            if (sociosVip[i] == null) {
                 String cedula = JOptionPane.showInputDialog("Ingrese la cedula");
                 Boolean seRepite = cedulaNoRepetir(cedula);
                 if (seRepite) {
@@ -41,7 +41,7 @@ public class Club<T> {
                 }
                 break;
 
-            } else if (i == sociosVip.length-1){
+            } else if (i == sociosVip.length - 1) {
                 JOptionPane.showMessageDialog(null, "Capacidad llena de socios VIPS del club. Elimine un socio para continuar. ");
                 break;
             }
@@ -50,10 +50,9 @@ public class Club<T> {
 
     public void insertarRegular() {
 
-
         //Para regulares
-        for (int i = 0; i < sociosRegulares.length ; i++) {
-            if (sociosRegulares[i] == null ) {
+        for (int i = 0; i < sociosRegulares.length; i++) {
+            if (sociosRegulares[i] == null) {
                 String cedula = JOptionPane.showInputDialog("Ingrese la cedula");
                 Boolean seRepite = cedulaNoRepetir(cedula);
                 if (seRepite) {
@@ -67,7 +66,7 @@ public class Club<T> {
                 }
                 break;
 
-            } else if (i == sociosRegulares.length-1){
+            } else if (i == sociosRegulares.length - 1) {
                 JOptionPane.showMessageDialog(null, "Capacidad llena de socios regulares del club. Elimine un socio para continuar. ");
                 break;
             }
@@ -79,72 +78,47 @@ public class Club<T> {
     public void InsertarPersonaAutorizada() {
         String cedulaSocio = JOptionPane.showInputDialog("Ingrese la cedula del socio al cual le va ingresar una nueva persona autorizada");
 
-        for (int i = 0; i < sociosRegulares.length ; i++) {
-            if (sociosRegulares[i] != null && sociosRegulares[i].getCedula().equals(cedulaSocio)){
+        for (int i = 0; i < sociosRegulares.length; i++) {
+            if (sociosRegulares[i] != null && sociosRegulares[i].getCedula().equals(cedulaSocio)) {
                 if (sociosRegulares[i].getFondos() > 0) {
                     String cedulaPersona = JOptionPane.showInputDialog("Ingrese la cedula de la persona autorizada a ingresar.");
-                    Boolean seRepite = cedulaNoRepetir(cedulaPersona);
-                    if (seRepite) {
-                        JOptionPane.showMessageDialog(null, "Cedula ingresada ya existe dentro de la base de datos.");
-                    }else {
+                    if (sociosRegulares[i].cedulaSeRepite(cedulaPersona) == false) {
                         sociosRegulares[i].agregarPersonas(cedulaPersona);
                     }
                     return;
                 } else {
-                    JOptionPane.showMessageDialog(null,"Fondos insuficientes. Ingrese fondos para poder ingresar una persona.");
+                    JOptionPane.showMessageDialog(null, "Fondos insuficientes. Ingrese fondos para poder ingresar una persona.");
                 }
             }
         }
+
         for (int i = 0; i < sociosVip.length; i++) {
-            if (sociosVip[i] != null && sociosVip[i].getCedula().equals(cedulaSocio) ) {
+            if (sociosVip[i] != null && sociosVip[i].getCedula().equals(cedulaSocio)) {
                 if (sociosVip[i].getFondos() > 0) {
                     String cedulaPersona = JOptionPane.showInputDialog("Ingrese la cedula de la persona autorizada a ingresar.");
-                    Boolean seRepite = cedulaNoRepetir(cedulaPersona);
-                    if (seRepite) {
-                        JOptionPane.showMessageDialog(null, "Cedula ingresada ya existe dentro de la base de datos.");
-                    }else {
+                    if (sociosVip[i].cedulaSeRepite(cedulaPersona) == false) {
                         sociosVip[i].agregarPersonas(cedulaPersona);
                     }
                     return;
-                }else {
-                    JOptionPane.showMessageDialog(null,"Fondos insuficientes. Ingrese fondos para poder ingresar una persona.");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Fondos insuficientes. Ingrese fondos para poder ingresar una persona.");
                 }
             }
         }
+
         JOptionPane.showMessageDialog(null, "Lo sentimos. No se pudo ingresar a la persona autorizada. " +
-                "Verique por favor si tiene fondos suficientes.");
+                "Verique por favor si el socio al que quiere ingresar tiene fondos suficientes.");
     }
 
-    public void eliminarPersonaAutorizada() {
-        String cedulaPerAutorizada = JOptionPane.showInputDialog("Ingrese la cedula de la persona autorizada que desee eliminar");
 
-        for (int i = 0; i < sociosRegulares.length ; i++) {
-            if (sociosRegulares[i] != null){
-                sociosRegulares[i].eliminarPersonas(cedulaPerAutorizada);
-                JOptionPane.showMessageDialog(null, "Persona autorizada eliminada con exito!" );
-                return;
-            }
-        }
-
-        for (int i = 0; i < sociosVip.length; i++) {
-            if (sociosVip[i] != null ) {
-                sociosVip[i].eliminarPersonas(cedulaPerAutorizada);
-                JOptionPane.showMessageDialog(null, "Persona autorizada eliminada con exito!" );
-                return;
-            }
-        }
-        JOptionPane.showMessageDialog(null, "Lo sentimos. " +
-                "No se encontro la persona que desea eliminar" );
-        return ;
-    }
 
     public Boolean cedulaNoRepetir(String cedula) {
         Boolean seRepite = false;
         Socios personaAutorizada = new Socios();
 
 
-        for (int i = 0; i < sociosRegulares.length ; i++) {
-            if (sociosRegulares[i] != null && sociosRegulares[i].getCedula().equals(cedula)){
+        for (int i = 0; i < sociosRegulares.length; i++) {
+            if (sociosRegulares[i] != null && sociosRegulares[i].getCedula().equals(cedula)) {
                 seRepite = true;
                 return seRepite;
             } else {
@@ -153,7 +127,7 @@ public class Club<T> {
         }
 
         for (int i = 0; i < sociosVip.length; i++) {
-            if (sociosVip[i] != null && sociosVip[i].getCedula().equals(cedula) ) {
+            if (sociosVip[i] != null && sociosVip[i].getCedula().equals(cedula)) {
                 seRepite = true;
                 return seRepite;
             } else {
@@ -163,16 +137,20 @@ public class Club<T> {
         return seRepite;
     }
 
+
+
     public Boolean eliminarSocio(String cedula) {
 
         for (int i = 0; i < sociosRegulares.length; i++) {
             if (sociosRegulares[i] != null && sociosRegulares[i].getCedula().equals(cedula)) {
-                if (sociosRegulares[i].getConsumos() != null && sociosRegulares[i].existenAutorizados()) {
+                if (sociosRegulares[i].existenConsumos() == false && sociosRegulares[i].existenAutorizados() == false) {
                     sociosRegulares[i] = null;
-                    JOptionPane.showMessageDialog(null,"Socio elimnado con exito!");
+                    JOptionPane.showMessageDialog(null, "Socio elimnado con exito!");
                     return true;
                 } else {
-                    JOptionPane.showMessageDialog(null,"Error. Estas intentando eliminar un socio que debe facturas.");
+                    JOptionPane.showMessageDialog(null, "Error. Estas intentando eliminar un socio que tiene autorizados.\n" +
+                            "O tiene facturas a pagar, por favor consulta en el menu.");
+                    return false;
                 }
 
             }
@@ -187,7 +165,30 @@ public class Club<T> {
 
         JOptionPane.showMessageDialog(null, "Lo sentimos. La cedula no coincide con ningun socio.");
 
-    return false;
+        return false;
+    }
+
+    public void eliminarAutorizado() {
+        String cedulaEliminar = JOptionPane.showInputDialog("Por favor ingrese la cedula de la persona autorizada que desee eliminar.");
+
+        for (int i = 0; i < sociosRegulares.length; i++) {
+            if (sociosRegulares[i] != null && sociosRegulares[i].buscarPersonasByCedula(cedulaEliminar)) {
+                System.out.println("si se ejecuto");
+                sociosRegulares[i].eliminarPersonaAutorizada(cedulaEliminar);
+                JOptionPane.showMessageDialog(null,"Persona autorizada eliminada con exito!");
+                return;
+            }
+        }
+
+        for (int i = 0; i < sociosVip.length; i++) {
+            if (sociosVip[i] != null && sociosVip[i].buscarPersonasByCedula(cedulaEliminar)) {
+                sociosVip[i].eliminarPersonaAutorizada(cedulaEliminar);
+                JOptionPane.showMessageDialog(null,"Persona autorizada eliminada con exito!");
+                return;
+            }
+        }
+        JOptionPane.showMessageDialog(null, "Lo sentimos, no encontramos la persona correspondiente. \n" +
+                "Por favor verique que la cedula ingresada sea correcta.");
     }
 
     public void ingresaFondos(String cedula) {
@@ -197,63 +198,78 @@ public class Club<T> {
                     "\nIntente ingresando un nuevo socio y vuelva a intentarlo.");
         }
 
-            for (int i = 0; i < sociosRegulares.length; i++) {
-                if (sociosRegulares[i] != null  && sociosRegulares[i].getCedula().equals(cedula)) {
-                    JOptionPane.showMessageDialog(null,
-                            "Nombre del socio: " + sociosRegulares[i].getNombre()
-                                    + "\nFondos: " + sociosRegulares[i].getFondos());
-                    sociosRegulares[i].ingresarFondos(sociosRegulares[i].getTipoDeSuscripcion());
-                    JOptionPane.showMessageDialog(null,
-                            "Nombre del socio: " + sociosRegulares[i].getNombre()
-                                    + "\nFondos actualizados: " + sociosRegulares[i].getFondos());
-                    return;
-                }
+        for (int i = 0; i < sociosRegulares.length; i++) {
+            if (sociosRegulares[i] != null && sociosRegulares[i].getCedula().equals(cedula)) {
+                JOptionPane.showMessageDialog(null,
+                        "Nombre del socio: " + sociosRegulares[i].getNombre()
+                                + "\nFondos: " + sociosRegulares[i].getFondos());
+                sociosRegulares[i].ingresarFondos(sociosRegulares[i].getTipoDeSuscripcion());
+                JOptionPane.showMessageDialog(null,
+                        "Nombre del socio: " + sociosRegulares[i].getNombre()
+                                + "\nFondos actualizados: " + sociosRegulares[i].getFondos());
+                return;
             }
+        }
 
-            for (int i = 0; i < sociosVip.length; i++) {
-                if (sociosVip[i] != null && sociosVip[i].getCedula().equals(cedula)) {
-                    JOptionPane.showMessageDialog(null,
-                            "Nombre del socio: " + sociosVip[i].getNombre()
-                                    + "\nFondos: " + sociosVip[i].getFondos());
-                    sociosVip[i].ingresarFondos(sociosVip[i].getTipoDeSuscripcion());
-                    JOptionPane.showMessageDialog(null,
-                            "Nombre del socio: " + sociosVip[i].getNombre()
-                                    + "\nFondos actualizados: " + sociosVip[i].getFondos());
-                    return;
-                }
+        for (int i = 0; i < sociosVip.length; i++) {
+            if (sociosVip[i] != null && sociosVip[i].getCedula().equals(cedula)) {
+                JOptionPane.showMessageDialog(null,
+                        "Nombre del socio: " + sociosVip[i].getNombre()
+                                + "\nFondos: " + sociosVip[i].getFondos());
+                sociosVip[i].ingresarFondos(sociosVip[i].getTipoDeSuscripcion());
+                JOptionPane.showMessageDialog(null,
+                        "Nombre del socio: " + sociosVip[i].getNombre()
+                                + "\nFondos actualizados: " + sociosVip[i].getFondos());
+                return;
             }
+        }
         JOptionPane.showMessageDialog(null, "La cedula ingresada no coincide con ningun registro. " +
                 "\nVerique la cedula y vuelva a intentar.");
         return;
     }
 
     public void ingresarConsumo(String cedula) {
-            Boolean socioEncontrado = false;
-            Boolean consumoExitoso = false;
+        Boolean socioEncontrado = false;
+        Boolean consumoExitoso = false;
 
-            for (int i = 0; i < sociosRegulares.length ; i++) {
-                if (sociosRegulares[i] != null && sociosRegulares[i].getCedula().equals(cedula) ) {
-                    consumoExitoso = sociosRegulares[i].crearConsumo(Double.parseDouble(JOptionPane.showInputDialog("Ingrese el valor del consumo a realizar")), sociosRegulares[i].getNombre());
-                    if ( consumoExitoso ) {
+        for (int i = 0; i < sociosRegulares.length; i++) {
+            if (sociosRegulares[i] != null && sociosRegulares[i].getCedula().equals(cedula)) {
+                consumoExitoso = sociosRegulares[i].crearConsumoSocio(Double.parseDouble(JOptionPane.showInputDialog("Ingrese el " +
+                        "valor del consumo a realizar")), sociosRegulares[i].getNombre());
+                if (consumoExitoso) {
+                    socioEncontrado = true;
+                    confirmacion(consumoExitoso);
+                    return;
+                }
+            } else if (sociosRegulares[i] != null && sociosRegulares[i].buscarPersonasByCedula(cedula)) {
+                    consumoExitoso = sociosRegulares[i].crearConsumoPersona(Double.parseDouble(JOptionPane.showInputDialog("Ingrese el " +
+                            "valor del consumo a realizar")) , cedula);
+                    if (consumoExitoso) {
                         socioEncontrado = true;
-                        Boolean siPagar = getSiPagar(consumoExitoso);
-                        eliminarConsumo(siPagar, sociosRegulares[i]);
+                        confirmacion(consumoExitoso);
                         return;
                     }
-                }
             }
+        }
 
-            for (int i = 0; i < sociosVip.length; i++) {
-                if (sociosVip[i] != null && sociosVip[i].getCedula().equals(cedula) ) {
-                    consumoExitoso = sociosVip[i].crearConsumo(Double.parseDouble(JOptionPane.showInputDialog("Ingrese el valor del consumo a realizar")), sociosVip[i].getNombre());
-                    if ( consumoExitoso ) {
-                        socioEncontrado = true;
-                        Boolean siPagar = getSiPagar(consumoExitoso);
-                        eliminarConsumo(siPagar, sociosVip[i]);
-                        return;
-                    }
+        for (int i = 0; i < sociosVip.length; i++) {
+            if (sociosVip[i] != null && sociosVip[i].getCedula().equals(cedula)) {
+                consumoExitoso = sociosVip[i].crearConsumoSocio(Double.parseDouble(JOptionPane.showInputDialog("Ingrese el valor del consumo a realizar")), sociosVip[i].getNombre());
+                if (consumoExitoso) {
+                    socioEncontrado = true;
+                    confirmacion(consumoExitoso);
+                    return;
+                }
+            } else if (sociosVip[i] != null && sociosVip[i].buscarPersonasByCedula(cedula)) {
+                consumoExitoso = sociosVip[i].crearConsumoPersona(Double.parseDouble(JOptionPane.showInputDialog("Ingrese el " +
+                        "valor del consumo a realizar")) , cedula);
+                if (consumoExitoso) {
+                    socioEncontrado = true;
+                    confirmacion(consumoExitoso);
+                    return;
                 }
             }
+        }
 
         if (socioEncontrado == false) {
             JOptionPane.showMessageDialog(null, "No se encontro el socio o no se genero con exito el consumo, por favor verique si la cedula ingresada es correcta. \n" +
@@ -261,56 +277,94 @@ public class Club<T> {
         }
     }
 
-    public Socios listarFacturas(String cedula) {
-
-        for (int i = 0; i < sociosRegulares.length ; i++) {
-            if (sociosRegulares[i] != null && sociosRegulares[i].getCedula().equals(cedula)){
-                sociosRegulares[i].listarFacturas();
-                return sociosRegulares[i];
-            }
-        }
-        for (int i = 0; i < sociosVip.length; i++) {
-            if (sociosVip[i] != null && sociosVip[i].getCedula().equals(cedula) ) {
-                return sociosVip[i];
-            }
-        }
-        JOptionPane.showMessageDialog(null, "No se encontro el socio, por favor verique que la cedula sea correcta.");
-        return null;
-    }
-
-    public void pagarFacturas(Socios socio) {
-        Boolean consumoEliminado;
-
-        consumoEliminado = socio.consumoEliminado();
-        if(consumoEliminado) {
-            JOptionPane.showMessageDialog(null, "Factura pagada con exito." + "\nsaldo actual: "
-                    + socio.getFondos());
-        } else {
-            JOptionPane.showMessageDialog(null, "Ha ocurrido un error el pagar la factura. Verique que si cuente con " +
-                    "fondos para realizar el pago e intente nuevamente.");
-
-        }
-
-    }
-
-    public void vecesConsumosByCedula(String cedula) {
+    public void listarFacturas(String cedula) {
+        Boolean consumoExitoso = false;
+        Boolean socioEncontrado = false;
 
         for (int i = 0; i < sociosRegulares.length; i++) {
             if (sociosRegulares[i] != null && sociosRegulares[i].getCedula().equals(cedula)) {
-                int consumos = sociosRegulares[i].mostrarConsumos();
-                JOptionPane.showMessageDialog(null, "La cantidad de consumos realizados por este socio son: " + consumos);
+                sociosRegulares[i].listarFacturas();
+                return;
+            } else if (sociosRegulares[i] != null && sociosRegulares[i].buscarPersonasByCedula(cedula)) {
+                sociosRegulares[i].listarFacturasPersonas(cedula);
                 return;
             }
         }
 
         for (int i = 0; i < sociosVip.length; i++) {
             if (sociosVip[i] != null && sociosVip[i].getCedula().equals(cedula)) {
-                int consumos = sociosVip[i].mostrarConsumos();
+                sociosVip[i].listarFacturas();
+                return;
+            } else if (sociosVip[i] != null && sociosVip[i].buscarPersonasByCedula(cedula)) {
+                sociosVip[i].listarFacturasPersonas(cedula);
+                return;
+            }
+        }
+
+
+        JOptionPane.showMessageDialog(null, "No se encontro el socio, por favor verique que la cedula sea correcta.");
+        return;
+    }
+
+    public void pagarFacturas(String concepto) {
+        Boolean consumoEliminado = false;
+
+        for (int i = 0; i < sociosRegulares.length; i++) {
+            if (sociosRegulares[i] != null ) {
+                consumoEliminado = sociosRegulares[i].eliminarConsumoByConcepto(concepto);
+                if (consumoEliminado) {
+                    return;
+                } else {
+                    if (sociosRegulares[i].eliminarFacturaPersona(concepto)){
+                        return;
+
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < sociosVip.length; i++) {
+            if (sociosRegulares[i] != null) {
+                consumoEliminado = sociosVip[i].eliminarConsumoByConcepto(concepto);
+                if (consumoEliminado) {
+                    return;
+                } else {
+                    if (sociosVip[i].eliminarFacturaPersona(concepto)) {
+                        return;
+                    }
+                }
+            }
+        }
+        JOptionPane.showMessageDialog(null, "No se encontro el concepto, pruebe a listar y verique que el nombre del concepto sea correcto. \n" +
+                "Recuerde que segun el taller las personas no cuentan con fondos, por esto mismo, si desea pagar las facturas" +
+                " de un autorizado tiene que ingresar desde ");
+    }
+
+    public void vecesConsumosByCedula(String cedula) {
+
+        for (int i = 0; i < sociosRegulares.length; i++) {
+            if (sociosRegulares[i] != null && sociosRegulares[i].getCedula().equals(cedula)) {
+                int consumos = sociosRegulares[i].mostrarCantidadConsumos();
                 JOptionPane.showMessageDialog(null, "La cantidad de consumos realizados por este socio son: " + consumos);
                 return;
-            } else {
-                JOptionPane.showMessageDialog(null, "Error, no se encontro el socio" +
-                        "\nVerique que la cedula ingresada sea correcta.");
+            } else if (sociosRegulares[i] != null && sociosRegulares[i].buscarPersonasByCedula(cedula) ) {
+                JOptionPane.showMessageDialog(null, "La cantidad de consumos realizados por este socio son: " +
+                        sociosRegulares[i].mostrarCantidadConsumosPersona(cedula)
+                );
+
+            }
+        }
+
+        for (int i = 0; i < sociosVip.length; i++) {
+            if (sociosVip[i] != null && sociosVip[i].getCedula().equals(cedula)) {
+                int consumos = sociosVip[i].mostrarCantidadConsumos();
+                JOptionPane.showMessageDialog(null, "La cantidad de consumos realizados por este socio son: " + consumos);
+                return;
+            } else if (sociosVip[i] != null && sociosVip[i].buscarPersonasByCedula(cedula) ) {
+                JOptionPane.showMessageDialog(null, "La cantidad de consumos realizados por este socio son: " +
+                        sociosVip[i].mostrarCantidadConsumosPersona(cedula)
+                );
+
             }
         }
     }
@@ -318,29 +372,13 @@ public class Club<T> {
 
     //Metodos privados de clase
 
-    private void eliminarConsumo(Boolean siPagar, Socios socio) {
-        Boolean consumoEliminado = false;
 
-        if (siPagar) {
-            consumoEliminado = socio.consumoEliminado();
-            if(consumoEliminado) {
-                JOptionPane.showMessageDialog(null, "Factura pagada con exito.");
-            } else {
-                JOptionPane.showMessageDialog(null, "Ha ocurrido un error el pagar el consumo.");
-
-            }
-        }
-    }
-
-    private Boolean getSiPagar(Boolean consumoExitoso) {
+    private void confirmacion(Boolean consumoExitoso) {
         JOptionPane.showMessageDialog(null, "Consumo realizado con exito.  \n " +
                 "Consumo realizado: " + consumoExitoso + "\n"
-                + "Estado de la factura: " /*Si esta paga o no, todavia no lo puedo implementar, por eso el comment*/
+                + "Estado de la factura: Sin pagar."
         );
-        return Boolean.parseBoolean(JOptionPane.showInputDialog("¿Desea pagar ahora mismo la factura? \n" +
-                "Digite 'true' Para pagar. \n" +
-                "Digite 'false' Para pagar mas tarde."));
+
+
     }
-
-
 }
