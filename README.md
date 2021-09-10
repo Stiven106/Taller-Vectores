@@ -1,5 +1,4 @@
-    Trabajo realizado por:
-    Brayan Stiven Marin Duque
+    Trabajo realizado por: Brayan Stiven Marin Duque
 
     Docente: Andres Felipe Sanchez Aguilar
 
